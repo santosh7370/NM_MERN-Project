@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Fetch code from the repository
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the project
+                sh './gradlew assemble'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests
+                sh './gradlew test'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Build and tests were successful.'
+        }
+        failure {
+            echo 'Build or tests failed.'
+        }
+    }
+}
